@@ -26,38 +26,38 @@ public class petDetailTest extends Common {
 		return new Object[][] {{"-666",1,"error","Pet not found"},{"null",404,"unknown","java.lang.NumberFormatException: For input string: \"null\""}};
 	}
 	
-	@Test(enabled = true,groups = {SMOKE},description ="get pet by id return HTTP OK")
-    public void getPetListByStatusTest() throws JsonMappingException, JsonProcessingException{
-        Map<String, String> queryParams = new TreeMap<>();
-        queryParams.put("status","available");
+	@Test(enabled = true, groups = { SMOKE }, description = "get pet by id return HTTP OK")
+	public void getPetListByStatusTest() throws JsonMappingException, JsonProcessingException {
+		Map<String, String> queryParams = new TreeMap<>();
+		queryParams.put("status", "available");
 
-        Response  response = getUrl(findByStatus, queryParams);
-        Assert.assertEquals(response.getStatusCode(),200,"Invalid response code");
+		Response response = getUrl(findByStatus, queryParams);
+		Assert.assertEquals(response.getStatusCode(), 200, "Invalid response code");
 
-        String id = response.jsonPath().get("[0].id").toString();
-        
-        Response  getResponse = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
-        Assert.assertEquals(getResponse.getStatusCode(),200,"Invalid response code");
-    }
-    
-	@Test(enabled = true,groups = {SMOKE},description ="get pet by id returns correct pet")
-    public void GetPetSuccessfullyTest() throws JsonMappingException, JsonProcessingException{
-        Map<String, String> queryParams = new TreeMap<>();
-        queryParams.put("status","available");
+		String id = response.jsonPath().get("[0].id").toString();
 
-        Response  response = getUrl(findByStatus, queryParams);
-        Assert.assertEquals(response.getStatusCode(),200,"Invalid response code");
+		Response getResponse = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
+		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
+	}
 
-        String id = response.jsonPath().get("[0].id").toString();
-        Response  getResponse = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
-        JsonBody json = new JsonBody();
-        Pet pet = json.getPet(getResponse.getBody().asString());
-        
-        Assert.assertEquals(getResponse.getStatusCode(),200,"Invalid response code");
-        Assert.assertNotNull(pet.getId(), "Missing id");
-        Assert.assertNotNull(pet.getName(), "Missing name");
-        Assert.assertNotNull(pet.getPhotoUrls(), "Missing photourls");
-    }
+	@Test(enabled = true, groups = { REGRESSION }, description = "get pet by id returns correct pet")
+	public void GetPetSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
+		Map<String, String> queryParams = new TreeMap<>();
+		queryParams.put("status", "available");
+
+		Response response = getUrl(findByStatus, queryParams);
+		Assert.assertEquals(response.getStatusCode(), 200, "Invalid response code");
+
+		String id = response.jsonPath().get("[0].id").toString();
+		Response getResponse = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
+		JsonBody json = new JsonBody();
+		Pet pet = json.getPet(getResponse.getBody().asString());
+
+		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
+		Assert.assertNotNull(pet.getId(), "Missing id");
+		Assert.assertNotNull(pet.getName(), "Missing name");
+		Assert.assertNotNull(pet.getPhotoUrls(), "Missing photourls");
+	}
 	
 	@Test(enabled = true,groups = {REGRESSION},description ="non existing pet id returns HTTP not found and correct error message", dataProvider = "Unsuccessful getPetById")
 	public void GetPetUnsuccessfullyTest(String id,int expectedCode,String expectedType,String expectedMessage) throws JsonMappingException, JsonProcessingException {

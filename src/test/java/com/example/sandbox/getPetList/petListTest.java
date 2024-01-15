@@ -41,30 +41,31 @@ public class petListTest extends Common {
 		Assert.assertEquals(response.getStatusCode(), 200, "Invalid response code");
 
 	}
-    
-    @Test(enabled = true,groups = {SMOKE,REGRESSION},description ="find pet b status has some pets")
-    public void FindPetsByStatusSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-    	Map<String, String> queryParams = new TreeMap<>();
-        queryParams.put("status","available");
-        Map<String, String> headers = new TreeMap<>();
-        headers.put("Mandatoryheader","BFG");
 
-        Response  response = getUrl(findByStatus,headers,queryParams);
-        JsonBody body = new JsonBody();
-        List<Pet> petList = body.getPetList(response.getBody().asString());
-        
-        Assert.assertEquals(response.getStatusCode(),200,"Invalid response code");
-        Assert.assertNotEquals(petList.size(), 0);
-    }
-    
-    @Test(enabled = true,groups = {REGRESSION},description ="find pet by status without status parameter returns empty list")
-    public void FindPetsByStatusUnsuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-        Response  response = getUrl(findByStatus);
-        JsonBody body = new JsonBody();
-        List<Pet> petList = body.getPetList(response.getBody().asString());
-        
-        Assert.assertEquals(response.getStatusCode(),200,"Invalid response code");
-        Assert.assertEquals(petList.size(), 0);
-        
-    }
+	@Test(enabled = true, groups = { REGRESSION }, description = "find pet by status has some pets")
+	public void FindPetsByStatusSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
+		Map<String, String> queryParams = new TreeMap<>();
+		queryParams.put("status", "available");
+		Map<String, String> headers = new TreeMap<>();
+		headers.put("Mandatoryheader", "BFG");
+
+		Response response = getUrl(findByStatus, headers, queryParams);
+		JsonBody body = new JsonBody();
+		List<Pet> petList = body.getPetList(response.getBody().asString());
+
+		Assert.assertEquals(response.getStatusCode(), 200, "Invalid response code");
+		Assert.assertNotEquals(petList.size(), 0);
+	}
+
+	@Test(enabled = true, groups = {
+			REGRESSION }, description = "find pet by status without status parameter returns empty list")
+	public void FindPetsByStatusUnsuccessfullyTest() throws JsonMappingException, JsonProcessingException {
+		Response response = getUrl(findByStatus);
+		JsonBody body = new JsonBody();
+		List<Pet> petList = body.getPetList(response.getBody().asString());
+
+		Assert.assertEquals(response.getStatusCode(), 200, "Invalid response code");
+		Assert.assertEquals(petList.size(), 0);
+
+	}
 }

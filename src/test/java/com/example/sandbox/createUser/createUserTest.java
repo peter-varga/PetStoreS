@@ -21,21 +21,22 @@ import org.testng.Assert;
 
 public class createUserTest extends Common {
 
-	@DataProvider(name="user creation endpoints")
-	public Object[] userEndpoints(){
+	@DataProvider(name = "user creation endpoints")
+	public Object[] userEndpoints() {
 		return new Object[] { createWithArray, createWithList };
 	}
-	
-	@Test(enabled = true, groups = { SMOKE, REGRESSION  }, description = "create user", dataProvider = "user creation endpoints")
+
+	@Test(enabled = true, groups = { SMOKE,
+			REGRESSION }, description = "create user", dataProvider = "user creation endpoints")
 	public void createUserSuccessfullyTest(String endPoint) throws JsonProcessingException {
 		// Arrange
 		List<User> users = new ArrayList<User>();
-		User user = User.builder().id(Tools.generateRandomNumber()).username(String.format("myTestUserName%s", Tools.generateRandomString()))
-				.firstName("John").lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563")
-				.userStatus(0).build();	
-		User user2 = User.builder().id(Tools.generateRandomNumber()).username(String.format("myTestUserName%s", Tools.generateRandomString()))
-				.firstName("John").lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563")
-				.userStatus(0).build();
+		User user = User.builder().id(Tools.generateRandomNumber())
+				.username(String.format("myTestUserName%s", Tools.generateRandomString())).firstName("John")
+				.lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563").userStatus(0).build();
+		User user2 = User.builder().id(Tools.generateRandomNumber())
+				.username(String.format("myTestUserName%s", Tools.generateRandomString())).firstName("John")
+				.lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563").userStatus(0).build();
 		users.add(user);
 		users.add(user2);
 
@@ -50,15 +51,16 @@ public class createUserTest extends Common {
 		Assert.assertEquals(info.getType(), "unknown", "Invalid type");
 		Assert.assertEquals(info.getMessage(), "ok", "Invalid message");
 	}
-	
-	@Test(enabled = true, groups = { REGRESSION }, description = "can not create user without proper payLoad", dataProvider = "user creation endpoints")
+
+	@Test(enabled = true, groups = {
+			REGRESSION }, description = "can not create user without proper payLoad", dataProvider = "user creation endpoints")
 	public void createUserUnSuccessfullyTest(String endPoint) throws JsonMappingException, JsonProcessingException {
-		//Arrange
-		//Act
+		// Arrange
+		// Act
 		Response createResponse = postUrl(endPoint, "");
 		JsonBody body = new JsonBody();
 		Info info = body.getInfo(createResponse.getBody().asString());
-		//Assert
+		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 405, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 405, "Invalid code");
 		Assert.assertEquals(info.getType(), "unknown", "Invalid type");

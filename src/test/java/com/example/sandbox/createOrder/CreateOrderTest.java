@@ -23,42 +23,34 @@ public class CreateOrderTest extends Common {
 
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "create order")
 	public void createOrderSuccessfullyTest() throws IOException {
-		//create order
-		//Arrange
+		// create order
+		// Arrange
 		String expectedDate = Tools.actualTimeToString();
-		Order expectedOrder = Order.builder()
-				.petId(0)
-				.quantity(1)
-				.shipDate(expectedDate)
-				.status("placed")
-				.complete(true)
-				.build();
+		Order expectedOrder = Order.builder().petId(0).quantity(1).shipDate(expectedDate).status("placed")
+				.complete(true).build();
 		JsonBody body = new JsonBody();
 		String json = body.createOrder(expectedOrder);
-		//Act
-		Response createResponse = postUrl(order,json);
+		// Act
+		Response createResponse = postUrl(order, json);
 		Order actualOrder = body.getOrder(createResponse.getBody().asString());
-		//Assert
-		Assert.assertEquals(createResponse.getStatusCode(),200,"Invalid response code");
-		assertThat(actualOrder)
-			.usingRecursiveComparison()
-			.ignoringFields("id")
-			.isEqualTo(expectedOrder);
+		// Assert
+		Assert.assertEquals(createResponse.getStatusCode(), 200, "Invalid response code");
+		assertThat(actualOrder).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedOrder);
 	}
-	
+
 	@Test(enabled = true, groups = { REGRESSION }, description = "can not create order without proper payLoad")
 	public void createOrderUnSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-		//try create order
-		//Arrange
+		// try create order
+		// Arrange
 		String json = "";
-		//Act
-		Response createResponse = postUrl(order,json);
+		// Act
+		Response createResponse = postUrl(order, json);
 		JsonBody body = new JsonBody();
 		Info data = body.getInfo(createResponse.getBody().asString());
-		//Assert
-		Assert.assertEquals(createResponse.getStatusCode(),400,"Invalid response code");
-		Assert.assertEquals(data.getCode(),1,"Invalid code");
-		Assert.assertEquals(data.getType(),"error","Invalid type");
-		Assert.assertEquals(data.getMessage(),"No data","Invalid data");
+		// Assert
+		Assert.assertEquals(createResponse.getStatusCode(), 400, "Invalid response code");
+		Assert.assertEquals(data.getCode(), 1, "Invalid code");
+		Assert.assertEquals(data.getType(), "error", "Invalid type");
+		Assert.assertEquals(data.getMessage(), "No data", "Invalid data");
 	}
 }

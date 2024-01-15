@@ -21,15 +21,15 @@ public class getUserLoginTest extends Common {
 
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "get userlogin always returns same data")
 	public void getUserLoginSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-		//Arrange
+		// Arrange
 		Map<String, String> queryParams = new TreeMap<>();
 		queryParams.put("username", "myTestUserNameUVgpoaimRt");
 		queryParams.put("password", "*****");
-		//Act
+		// Act
 		Response getResponse = getUrl(login, queryParams);
 		JsonBody body = new JsonBody();
 		Info info = body.getInfo(getResponse.getBody().asString());
-		//Assert
+		// Assert
 		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 200, "Invalid code");
 		Assert.assertEquals(info.getType(), "unknown", "Invalid type");

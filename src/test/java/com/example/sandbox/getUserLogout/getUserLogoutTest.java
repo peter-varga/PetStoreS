@@ -18,12 +18,12 @@ public class getUserLogoutTest extends Common {
 	
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "get userlogout alwayys returns correct data")
 	public void getUserLogoutSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-		//Arrange
-		//Act
+		// Arrange
+		// Act
 		Response getResponse = getUrl(logout);
 		JsonBody body = new JsonBody();
 		Info info = body.getInfo(getResponse.getBody().asString());
-		//Assert
+		// Assert
 		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 200, "Invalid code");
 		Assert.assertEquals(info.getType(), "unknown", "Invalid type");
