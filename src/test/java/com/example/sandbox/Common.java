@@ -78,7 +78,39 @@ public class Common extends Endpoints {
     }
 
     //----------------------------------PUT----------------------------------
+    public Response putUrl(String endpoint,String body){
+
+
+        return given()
+                .relaxedHTTPSValidation()
+                .contentType("application/json; charset=UTF-8")
+                .body(body)
+                .and()
+                .log().everything()
+                .when()
+                .put(baseUrl+endpoint)
+                .then()
+                .log()
+                .all()
+                .extract().response();
+
+    }
 
     //----------------------------------DELETE----------------------------------
+    public Response deleteUrl(String endpoint){
+
+
+        return given()
+                .relaxedHTTPSValidation()
+                .and()
+                .log().everything()
+                .when()
+                .delete(baseUrl+endpoint)
+                .then()
+                .log()
+                .all()
+                .extract().response();
+
+    }
 }
 
