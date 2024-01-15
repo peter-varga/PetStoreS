@@ -1,18 +1,15 @@
 package com.example.sandbox.businessProcesses;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static com.example.sandbox.util.constans.Tags.SMOKE;
 import static com.example.sandbox.util.constans.Tags.REGRESSION;
+import static com.example.sandbox.util.constans.Tags.SMOKE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
 import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
@@ -26,19 +23,15 @@ public class PetLifeCycleTest extends Common {
 	public void petLifeCycleTest() throws IOException {
 		// Create Pet
 		// Arrange
-		List<String> expectedPhotoUrls = new ArrayList<String>();
-		expectedPhotoUrls.add(TestData.HYDRAIMAGE);
-		String expectedName = TestData.PETNAME;
-		JsonBody body = new JsonBody();
-		Pet expectedPet = Pet.builder().name(expectedName).photoUrls(expectedPhotoUrls).build();
-		String json = body.createPet(expectedPet);
+		Pet expectedPet = Pet.builder().name(TestData.PETNAME).photoUrl(TestData.HYDRAIMAGE).build();
+		String json = serializer.createPet(expectedPet);
 		// Act
 		Response createResponse = postUrl(newPet, json);
-		Pet createdPet = body.getPet(createResponse.getBody().asString());
+		Pet createdPet = serializer.getPet(createResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 200, "Invalid response code");
-		Assert.assertEquals(createdPet.getName(), expectedName);
-		Assert.assertEquals(createdPet.getPhotoUrls(), expectedPhotoUrls);
+		Assert.assertEquals(createdPet.getName(), expectedPet.getName());
+		Assert.assertEquals(createdPet.getPhotoUrls(), expectedPet.getPhotoUrls());
 
 		// Get Pet
 		// Arrange
@@ -47,18 +40,17 @@ public class PetLifeCycleTest extends Common {
 		String urlWithPetId = Tools.replaceVariable("petId").withValue(String.valueOf(expectedId)).inText(petById);
 		// Act
 		Response getResponse = getUrl(urlWithPetId);
-		createdPet = body.getPet(getResponse.getBody().asString());
+		Pet actualPet = serializer.getPet(getResponse.getBody().asString());
 		// Assert
-		assertThat(createdPet).usingRecursiveComparison().isEqualTo(expectedPet);
+		assertThat(actualPet).usingRecursiveComparison().isEqualTo(expectedPet);
 
 		// Update Pet
 		// Arrange
-		String expectedChangedName = TestData.PETNAME_UPDATED;
-		expectedPet.setName(expectedChangedName);
-		json = body.createPet(expectedPet);
+		expectedPet.setName(TestData.PETNAME_UPDATED);
+		json = serializer.createPet(expectedPet);
 		// Act
 		Response updateResponse = putUrl(newPet, json);
-		Pet updatedPet = body.getPet(updateResponse.getBody().asString());
+		Pet updatedPet = serializer.getPet(updateResponse.getBody().asString());
 		// Assert
 		assertThat(updatedPet).usingRecursiveComparison().isEqualTo(expectedPet);
 
@@ -66,16 +58,16 @@ public class PetLifeCycleTest extends Common {
 		// Arrange
 		// Act
 		getResponse = getUrl(urlWithPetId);
-		updatedPet = body.getPet(getResponse.getBody().asString());
+		actualPet = serializer.getPet(getResponse.getBody().asString());
 		// Assert
-		assertThat(updatedPet).usingRecursiveComparison().isEqualTo(expectedPet);
+		assertThat(actualPet).usingRecursiveComparison().isEqualTo(expectedPet);
 
 		// Delete Pet
 		// Arrange
 		Info expectedData = Info.builder().code(200).type("unknown").message(String.valueOf(expectedId)).build();
 		// Act
 		Response deleteResponse = deleteUrl(urlWithPetId);
-		Info deletedPet = body.getInfo(deleteResponse.getBody().asString());
+		Info deletedPet = serializer.getInfo(deleteResponse.getBody().asString());
 		// Assert
 		assertThat(deletedPet).usingRecursiveComparison().isEqualTo(expectedData);
 
@@ -86,7 +78,7 @@ public class PetLifeCycleTest extends Common {
 		expectedData.setMessage("Pet not found");
 		// Act
 		getResponse = getUrl(urlWithPetId);
-		deletedPet = body.getInfo(getResponse.getBody().asString());
+		deletedPet = serializer.getInfo(getResponse.getBody().asString());
 		// Assert
 		assertThat(deletedPet).usingRecursiveComparison().isEqualTo(expectedData);
 	}

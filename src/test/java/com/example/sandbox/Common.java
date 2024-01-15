@@ -4,10 +4,18 @@ import io.restassured.response.Response;
 
 import java.util.Map;
 
+import com.example.sandbox.util.JsonBody;
+
 import static io.restassured.RestAssured.given;
 
 public class Common extends Endpoints {
 
+	protected JsonBody serializer;
+	
+	public Common() {
+		this.serializer = new JsonBody();
+	}
+	
     //----------------------------------GET----------------------------------
     public Response getUrl(String endpoint){
 

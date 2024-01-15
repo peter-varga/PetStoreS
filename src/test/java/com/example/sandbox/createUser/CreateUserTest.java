@@ -9,7 +9,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
 import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
@@ -52,12 +51,10 @@ public class CreateUserTest extends Common {
 				.build();
 		users.add(user);
 		users.add(user2);
-
-		JsonBody body = new JsonBody();
-		String json = body.createUsers(users);
+		String json = serializer.createUsers(users);
 		// Act
 		Response createResponse = postUrl(endPoint, json);
-		Info info = body.getInfo(createResponse.getBody().asString());
+		Info info = serializer.getInfo(createResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 200, "Invalid code");
@@ -71,8 +68,7 @@ public class CreateUserTest extends Common {
 		// Arrange
 		// Act
 		Response createResponse = postUrl(endPoint, "");
-		JsonBody body = new JsonBody();
-		Info info = body.getInfo(createResponse.getBody().asString());
+		Info info = serializer.getInfo(createResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 405, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 405, "Invalid code");

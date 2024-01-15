@@ -8,7 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
 import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
@@ -36,8 +35,7 @@ public class GetUserTest extends Common {
 		// Act
 		Response getResponse = getUrl(
 				Tools.replaceVariable("username").withValue(expectedUser.getUsername()).inText(user));
-		JsonBody body = new JsonBody();
-		User actualUser = body.getUser(getResponse.getBody().asString());
+		User actualUser = serializer.getUser(getResponse.getBody().asString());
 		// Assert
 		assertThat(actualUser).usingRecursiveComparison().isEqualTo(expectedUser);
 	}
@@ -51,8 +49,7 @@ public class GetUserTest extends Common {
 				.replaceVariable("username")
 				.withValue(TestData.USERNAME_NON_EXISTING_USER)
 				.inText(user));
-		JsonBody body = new JsonBody();
-		Info info = body.getInfo(getResponse.getBody().asString());
+		Info info = serializer.getInfo(getResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(getResponse.getStatusCode(), 404, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 1, "Invalid code");

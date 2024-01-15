@@ -10,7 +10,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,8 +27,7 @@ public class GetUserLoginTest extends Common {
 		queryParams.put("password", TestData.PASSWORD);
 		// Act
 		Response getResponse = getUrl(login, queryParams);
-		JsonBody body = new JsonBody();
-		Info info = body.getInfo(getResponse.getBody().asString());
+		Info info = serializer.getInfo(getResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 200, "Invalid code");

@@ -7,7 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,8 +20,7 @@ public class GetUserLogoutTest extends Common {
 		// Arrange
 		// Act
 		Response getResponse = getUrl(logout);
-		JsonBody body = new JsonBody();
-		Info info = body.getInfo(getResponse.getBody().asString());
+		Info info = serializer.getInfo(getResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertEquals(info.getCode(), 200, "Invalid code");

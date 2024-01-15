@@ -10,7 +10,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.example.sandbox.util.swagger.definitions.Pet;
@@ -49,8 +48,7 @@ public class PetDetailTest extends Common {
 
 		String id = response.jsonPath().get("[0].id").toString();
 		Response getResponse = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
-		JsonBody json = new JsonBody();
-		Pet pet = json.getPet(getResponse.getBody().asString());
+		Pet pet = serializer.getPet(getResponse.getBody().asString());
 
 		Assert.assertEquals(getResponse.getStatusCode(), 200, "Invalid response code");
 		Assert.assertNotNull(pet.getId(), "Missing id");
@@ -67,8 +65,7 @@ public class PetDetailTest extends Common {
 			String id, int expectedCode, String expectedType, String expectedMessage)
 			throws JsonMappingException, JsonProcessingException {
 		Response response = getUrl(Tools.replaceVariable("petId").withValue(id).inText(petById));
-		JsonBody json = new JsonBody();
-		Info error = json.getInfo(response.getBody().asString());
+		Info error = serializer.getInfo(response.getBody().asString());
 
 		Assert.assertEquals(response.getStatusCode(), 404, "Invalid response code");
 		Assert.assertEquals(error.getCode(), expectedCode);

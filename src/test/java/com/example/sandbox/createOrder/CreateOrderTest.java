@@ -10,7 +10,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
-import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
 import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Order;
@@ -31,11 +30,10 @@ public class CreateOrderTest extends Common {
 				.shipDate(Tools.actualTimeToString())
 				.status(TestData.ORDERSTATUS)
 				.complete(TestData.ORDER_IS_COMPLETED).build();
-		JsonBody body = new JsonBody();
-		String json = body.createOrder(expectedOrder);
+		String json = serializer.createOrder(expectedOrder);
 		// Act
 		Response createResponse = postUrl(order, json);
-		Order actualOrder = body.getOrder(createResponse.getBody().asString());
+		Order actualOrder = serializer.getOrder(createResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 200, "Invalid response code");
 		assertThat(actualOrder).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedOrder);
@@ -43,13 +41,11 @@ public class CreateOrderTest extends Common {
 
 	@Test(enabled = true, groups = { REGRESSION }, description = "can not create order without proper payLoad")
 	public void createOrderUnSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
-		// try create order
 		// Arrange
 		String json = "";
 		// Act
 		Response createResponse = postUrl(order, json);
-		JsonBody body = new JsonBody();
-		Info data = body.getInfo(createResponse.getBody().asString());
+		Info data = serializer.getInfo(createResponse.getBody().asString());
 		// Assert
 		Assert.assertEquals(createResponse.getStatusCode(), 400, "Invalid response code");
 		Assert.assertEquals(data.getCode(), 1, "Invalid code");
