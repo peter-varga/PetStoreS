@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import com.example.sandbox.Common;
 import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
+import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Order;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,9 +26,11 @@ public class CreateOrderTest extends Common {
 	public void createOrderSuccessfullyTest() throws IOException {
 		// create order
 		// Arrange
-		String expectedDate = Tools.actualTimeToString();
-		Order expectedOrder = Order.builder().petId(0).quantity(1).shipDate(expectedDate).status("placed")
-				.complete(true).build();
+		Order expectedOrder = Order.builder().petId(TestData.EXISTING_PETID).quantity(
+				Tools.generateRandomNumber())
+				.shipDate(Tools.actualTimeToString())
+				.status(TestData.ORDERSTATUS)
+				.complete(TestData.ORDER_IS_COMPLETED).build();
 		JsonBody body = new JsonBody();
 		String json = body.createOrder(expectedOrder);
 		// Act

@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import com.example.sandbox.Common;
 import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
+import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.example.sandbox.util.swagger.definitions.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,13 +18,21 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.restassured.response.Response;
 
-public class getUserTest extends Common {
+public class GetUserTest extends Common {
 
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "get existing testuser returns correct data")
 	public void getUserSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
 		// Arrange
-		User expectedUser = User.builder().id(76).username("myTestUserNameUVgpoaimRt").email("johndoe@mail.com")
-				.firstName("John").lastName("Doe").password("*****").phone("06809874563").userStatus(0).build();
+		User expectedUser = User.builder()
+				.id(TestData.USER_ID_EXISTING_USER)
+				.username(TestData.USERNAME_EXISTING_USER)
+				.email(TestData.EMAIL)
+				.firstName(TestData.USER_FIRSTNAME)
+				.lastName(TestData.USER_LASTNAME)
+				.password(TestData.PASSWORD)
+				.phone(TestData.PHONE)
+				.userStatus(TestData.USER_STATUS)
+				.build();
 		// Act
 		Response getResponse = getUrl(
 				Tools.replaceVariable("username").withValue(expectedUser.getUsername()).inText(user));
@@ -36,9 +45,12 @@ public class getUserTest extends Common {
 	@Test(enabled = true, groups = { REGRESSION }, description = "get nonexisting testuser returns correct error")
 	public void getUserUnSuccessfullyTest() throws JsonMappingException, JsonProcessingException {
 		// Arrange
-		String testUserName = "user1";
 		// Act
-		Response getResponse = getUrl(Tools.replaceVariable("username").withValue(testUserName).inText(user));
+		Response getResponse = getUrl(
+				Tools
+				.replaceVariable("username")
+				.withValue(TestData.USERNAME_NON_EXISTING_USER)
+				.inText(user));
 		JsonBody body = new JsonBody();
 		Info info = body.getInfo(getResponse.getBody().asString());
 		// Assert

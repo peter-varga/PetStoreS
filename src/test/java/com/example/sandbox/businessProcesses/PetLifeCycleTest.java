@@ -28,7 +28,7 @@ public class PetLifeCycleTest extends Common {
 		// Arrange
 		List<String> expectedPhotoUrls = new ArrayList<String>();
 		expectedPhotoUrls.add(TestData.HYDRAIMAGE);
-		String expectedName = "MyTestDog";
+		String expectedName = TestData.PETNAME;
 		JsonBody body = new JsonBody();
 		Pet expectedPet = Pet.builder().name(expectedName).photoUrls(expectedPhotoUrls).build();
 		String json = body.createPet(expectedPet);
@@ -53,7 +53,7 @@ public class PetLifeCycleTest extends Common {
 
 		// Update Pet
 		// Arrange
-		String expectedChangedName = "MyTestDogUpdated";
+		String expectedChangedName = TestData.PETNAME_UPDATED;
 		expectedPet.setName(expectedChangedName);
 		json = body.createPet(expectedPet);
 		// Act

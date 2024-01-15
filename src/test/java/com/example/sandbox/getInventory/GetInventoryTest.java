@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.restassured.response.Response;
 
-public class getInventoryTest extends Common {
+public class GetInventoryTest extends Common {
 
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "get inventory is always successful")
 	public void getInventorSuccessfullyTest() throws JsonMappingException, JsonProcessingException {

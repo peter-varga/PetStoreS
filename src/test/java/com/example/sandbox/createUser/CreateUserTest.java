@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.example.sandbox.Common;
 import com.example.sandbox.util.JsonBody;
 import com.example.sandbox.util.Tools;
+import com.example.sandbox.util.constans.TestData;
 import com.example.sandbox.util.swagger.definitions.Info;
 import com.example.sandbox.util.swagger.definitions.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
-public class createUserTest extends Common {
+public class CreateUserTest extends Common {
 
 	@DataProvider(name = "user creation endpoints")
 	public Object[] userEndpoints() {
@@ -32,11 +33,23 @@ public class createUserTest extends Common {
 		// Arrange
 		List<User> users = new ArrayList<User>();
 		User user = User.builder().id(Tools.generateRandomNumber())
-				.username(String.format("myTestUserName%s", Tools.generateRandomString())).firstName("John")
-				.lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563").userStatus(0).build();
+				.username(String.format(TestData.USERNAME_TEMPLATE, Tools.generateRandomString()))
+				.firstName(TestData.USER_FIRSTNAME)
+				.lastName(TestData.USER_LASTNAME)
+				.email(TestData.EMAIL)
+				.password(TestData.PASSWORD)
+				.phone(TestData.PHONE)
+				.userStatus(TestData.USER_STATUS)
+				.build();
 		User user2 = User.builder().id(Tools.generateRandomNumber())
-				.username(String.format("myTestUserName%s", Tools.generateRandomString())).firstName("John")
-				.lastName("Doe").email("johndoe@mail.com").password("*****").phone("06809874563").userStatus(0).build();
+				.username(String.format(TestData.USERNAME_TEMPLATE, Tools.generateRandomString()))
+				.firstName(TestData.USER_FIRSTNAME)
+				.lastName(TestData.USER_LASTNAME)
+				.email(TestData.EMAIL)
+				.password(TestData.PASSWORD)
+				.phone(TestData.PHONE)
+				.userStatus(TestData.USER_STATUS)
+				.build();
 		users.add(user);
 		users.add(user2);
 

@@ -19,7 +19,7 @@ import java.util.TreeMap;
 import static com.example.sandbox.util.constans.Tags.SMOKE;
 import static com.example.sandbox.util.constans.Tags.REGRESSION;
 
-public class petListTest extends Common {
+public class GetPetListTest extends Common {
 
 	@Test(enabled = true, groups = { SMOKE }, description = "find pet by status returns HTTP OK")
 	public void findPetsByStatusReturnsOKTest() {

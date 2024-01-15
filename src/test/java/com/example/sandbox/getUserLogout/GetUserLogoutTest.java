@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import io.restassured.response.Response;
 
-public class getUserLogoutTest extends Common {
+public class GetUserLogoutTest extends Common {
 	
 	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "get userlogout alwayys returns correct data")
 	public void getUserLogoutSuccessfullyTest() throws JsonMappingException, JsonProcessingException {

@@ -36,35 +36,34 @@ public class JsonBody {
 		Info data = mapper.readValue(json, Info.class);
 		return data;
 	}
-	
-	public List<Pet> getPetList(String json) throws JsonMappingException, JsonProcessingException{
+
+	public List<Pet> getPetList(String json) throws JsonMappingException, JsonProcessingException {
 		ArrayList<Pet> list = mapper.readValue(json,
-                mapper.getTypeFactory().constructCollectionType(ArrayList.class, Pet.class));
+				mapper.getTypeFactory().constructCollectionType(ArrayList.class, Pet.class));
 		return list;
 	}
-	
+
 	public String createOrder(Order order) throws IOException {
 		String body = mapper.writeValueAsString(order);
 		return body;
 	}
-	
+
 	public Order getOrder(String json) throws JsonMappingException, JsonProcessingException {
 		Order order = mapper.readValue(json, Order.class);
 		return order;
 	}
-	
-	public Map<String,Object> getInventory(String json) throws JsonMappingException, JsonProcessingException {
+
+	public Map<String, Object> getInventory(String json) throws JsonMappingException, JsonProcessingException {
 		TreeMap<String, Object> value = mapper.readValue(json, TreeMap.class);
-		Map<String,Object> result = 
-		        value;
+		Map<String, Object> result = value;
 		return result;
 	}
-	
+
 	public String createUsers(List<User> users) throws JsonProcessingException {
 		String body = mapper.writeValueAsString(users);
 		return body;
 	}
-	
+
 	public User getUser(String json) throws JsonMappingException, JsonProcessingException {
 		User user = mapper.readValue(json, User.class);
 		return user;

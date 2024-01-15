@@ -1,7 +1,6 @@
 package com.example.sandbox.createPet;
 
 import static com.example.sandbox.util.constans.Tags.REGRESSION;
-import static com.example.sandbox.util.constans.Tags.SMOKE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.example.sandbox.Common;
@@ -22,17 +22,22 @@ import io.restassured.response.Response;
 
 public class CreatePetTest extends Common {
 
-	@Test(enabled = true, groups = { SMOKE, REGRESSION }, description = "create pet")
-	public void createPetSuccessfullyTest() throws IOException {
+	@DataProvider(name="Successful create Pet")
+	public Object[] statuses(){
+		return new Object[] {"available","pending","sold"};
+	}
+	
+	@Test(enabled = true, groups = { REGRESSION }, description = "create pet", dataProvider = "Successful create Pet")
+	public void createPetSuccessfullyTest(String expectedStatus) throws IOException {
 		// create Pet
 		// Arrange
-		Item item = Item.builder().name("myItem").build();
+		Item item = Item.builder().name(TestData.ITEMNAME).build();
 		List<Item> tags = new ArrayList<Item>();
 		tags.add(item);
 		List<String> photoUrls = new ArrayList<String>();
 		photoUrls.add(TestData.HYDRAIMAGE);
-		String name = "MyTestDog";
-		String status = "available";
+		String name = TestData.PETNAME;
+		String status = expectedStatus;
 		JsonBody body = new JsonBody();
 		Pet expectedPet = Pet.builder().name(name).photoUrls(photoUrls).category(item).status(status).tags(tags)
 				.build();
